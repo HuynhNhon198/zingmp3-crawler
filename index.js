@@ -1,11 +1,12 @@
+const functions = require("firebase-functions");
 const { GET_Song } = require("./services/songSV.js");
 const { GET_Top100 } = require("./services/top100.js");
-const { GET_Artist } = require("./services/artistsSV.js");
+const { GET_Artists } = require("./services/artistsSV.js");
+const { GET_Artist } = require("./services/artistSV.js");
 const express = require("express");
 const cors = require("cors");
 
 const api = express();
-var port = process.env.PORT || 1998;
 
 api.use(
   cors({
@@ -29,10 +30,14 @@ api.get("/top100", async (req, res) => {
 
 api.get("/get-artists", async (req, res) => {
   // res.send('ok')
-  const resp = await GET_Artist();
+  const resp = await GET_Artists();
   res.json(resp);
 });
 
-api.listen(port, () =>
-  console.log(`Example app listening at http://localhost:${port}`)
-);
+api.get("/get-artist/:alias", async (req, res) => {
+  // res.send('ok')
+  const resp = await GET_Artist(req.params.alias);
+  res.json(resp);
+});
+
+exports.api = functions.https.onRequest(api);
