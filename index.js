@@ -1,4 +1,3 @@
-const functions = require("firebase-functions");
 const { GET_Song } = require("./services/songSV.js");
 const { GET_Top100 } = require("./services/top100.js");
 const { GET_Artists } = require("./services/artistsSV.js");
@@ -13,7 +12,7 @@ api.use(
     origin: ["*"],
   })
 );
-
+const port = 3000;
 api.get("/get-song", async (req, res) => {
   // res.send('ok')
   const { id, alias } = req.query;
@@ -40,4 +39,6 @@ api.get("/get-artist/:alias", async (req, res) => {
   res.json(resp);
 });
 
-exports.api = functions.https.onRequest(api);
+app.listen(port, () =>
+  console.log(`Example app listening at http://localhost:${port}`)
+);
