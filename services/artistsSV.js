@@ -13,7 +13,6 @@ module.exports = {
       const body = await page.evaluate(() => {
         return document.querySelector("body").innerHTML;
       });
-      console.log(body);
       let $ = cheerio.load(body);
 
       const data = [];
