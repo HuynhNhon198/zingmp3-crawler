@@ -12,7 +12,7 @@ api.use(
     origin: ["*"],
   })
 );
-const port = 3000;
+const port = 1998;
 api.get("/get-song", async (req, res) => {
   // res.send('ok')
   const { id, alias } = req.query;
