@@ -22,7 +22,6 @@ module.exports = {
         };
       } else {
         const [matchUrl] = match;
-        // console.log(matchUrl);
         const data = await GET_FromUrl(
           `https://mp3.zing.vn/xhr/media/get-source?type=audio&${matchUrl}`
         );

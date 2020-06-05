@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer");
-const { GET_FromUrl } = require("./helperSV.js");
 
 module.exports = {
   GET_Artist: async (alias) => {
@@ -24,32 +23,11 @@ module.exports = {
         if (url === mainUrl) {
           mainUrlStatus = status;
         }
-
-        // if (
-        //   url.includes(
-        //     `https://zingmp3.vn/api/oa/get-artist-info?alias=${alias}`
-        //   )
-        // ) {
-        //   const res = await GET_FromUrl(url);
-        //   data.cover = res.data.cover;
-        //   data.name = res.data.name;
-        // }
-
-        // if (url.includes(`https://zingmp3.vn/api/oa/get-home?alias=${alias}`)) {
-        //   const res = await response.json();
-        //   data = Object.assign(data, res.data[1]);
-        //   r({
-        //     code: "success",
-        //     message: data,
-        //   });
-        // }
-        // console.log(url);
         if (
           url.includes(
             `https://zingmp3.vn/api/artist/get-detail?alias=${alias}`
           )
         ) {
-          console.log(url);
           const res = await response.json();
           data = {
             cover: res.data.cover,
