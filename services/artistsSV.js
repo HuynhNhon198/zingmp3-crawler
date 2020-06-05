@@ -8,11 +8,12 @@ module.exports = {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       await page.goto("https://zingmp3.vn/the-loai-nghe-si.html");
-      await page.waitForSelector(".container", { timeout: 1000 });
+      await page.waitForSelector(".container", { timeout: 10000 });
 
       const body = await page.evaluate(() => {
         return document.querySelector("body").innerHTML;
       });
+      console.log(body);
       let $ = cheerio.load(body);
 
       const data = [];
