@@ -39,6 +39,6 @@ api.get("/get-artist/:alias", async (req, res) => {
   res.json(resp);
 });
 
-app.listen(port, () =>
+api.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
 );
