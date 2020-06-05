@@ -13,27 +13,27 @@ api.use(
   })
 );
 const port = 1998;
-api.get("/get-song", async (req, res) => {
+api.get("/crawler/get-song", async (req, res) => {
   // res.send('ok')
   const { id, alias } = req.query;
   const resp = await GET_Song(id, alias);
   res.json(resp);
 });
 
-api.get("/top100", async (req, res) => {
+api.get("/crawler/top100", async (req, res) => {
   // res.send('ok')
   const { type } = req.query;
   const resp = await GET_Top100(type);
   res.json(resp);
 });
 
-api.get("/get-artists", async (req, res) => {
+api.get("/crawler/get-artists", async (req, res) => {
   // res.send('ok')
   const resp = await GET_Artists();
   res.json(resp);
 });
 
-api.get("/get-artist/:alias", async (req, res) => {
+api.get("/crawler/get-artist/:alias", async (req, res) => {
   // res.send('ok')
   const resp = await GET_Artist(req.params.alias);
   res.json(resp);
