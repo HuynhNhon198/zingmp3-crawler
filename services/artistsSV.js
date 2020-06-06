@@ -1,91 +1,57 @@
 const cheerio = require("cheerio");
-const puppeteer = require("puppeteer");
-const Nightmare = require("nightmare");
+const request = require("request-promise");
 
 module.exports = {
   GET_Artists: async () => {
-    // try {
-    //   const browser = await puppeteer.launch();
-    //   const page = await browser.newPage();
-    //   await page.goto("https://zingmp3.vn/the-loai-nghe-si.html");
-    //   await page.waitForSelector(".container", { timeout: 10000 });
+    const html = await request(`http://mp3.zing.vn/the-loai-nghe-si`).catch(
+      (err) => {
+        return {
+          code: "error",
+          message: "Có lỗi xảy ra...",
+        };
+      }
+    );
 
-    //   const body = await page.evaluate(() => {
-    //     return document.querySelector("body").innerHTML;
-    //   });
-    // let $ = cheerio.load(body);
+    if (html) {
+      // console.log(html);
+      let $ = cheerio.load(html);
 
-    // const data = [];
-    // $(".pad-top-20 section").each((i, e) => {
-    //   const type = {
-    //     name: $(e).find("a.z-box-title").text(),
-    //     artists: [],
-    //   };
-    //   $(e)
-    //     .find(".col-album-circle")
-    //     .each((ind, el) => {
-    //       const artist = {
-    //         name: $(el).find(".card-info .artist a").text(),
-    //         alias: $(el)
-    //           .find(".card-info .artist a")
-    //           .attr("href")
-    //           .replace("/nghe-si/", ""),
-    //         thumb: $(el).find("img").attr("src"),
-    //       };
-    //       type.artists.push(artist);
-    //     });
-    //   data.push(type);
-    // });
+      const data = [];
 
-    //   await browser.close();
-    //   return {
-    //     code: "success",
-    //     message: data,
-    //   };
-    // } catch (error) {
-    //   return {
-    //     code: "error",
-    //     message: "some error...",
-    //   };
-    // }
-    const nightmare = Nightmare({ show: false, waitTimeout: 10000 });
-    const body = await nightmare
-      .goto("https://zingmp3.vn/the-loai-nghe-si.html")
-      .wait(".pad-top-20 section")
-      .evaluate(() => document.body.innerHTML)
-      .catch((error) => {
-        console.error("Search failed:", error);
+      $(".zcontent .title-section").each((i, e) => {
+        const type = {
+          id: i,
+          name: $(e).text().trim(),
+          artists: [],
+        };
+        data.push(type);
       });
-    // console.log(body);
-    let $ = cheerio.load(body);
-
-    const data = [];
-    console.log($(".pad-top-20 section").length);
-    $(".pad-top-20 section").each((i, e) => {
-      const type = {
-        name: $(e).find("a.z-box-title").text(),
-        artists: [],
+      // console.log(data);
+      console.log($(".row.fn-list").length);
+      $(".row.fn-list").each((ind, el) => {
+        const artists = [];
+        $(el)
+          .find(".artist-item")
+          .each((i, ell) => {
+            if (i > 0) {
+              const artist = {
+                name: $(ell).find("h3.name-item").text(),
+                alias: $(ell)
+                  .find("h3.name-item a")
+                  .attr("href")
+                  .replace("/nghe-si/", ""),
+                thumb: $(ell).find("a.thumb img").attr("src"),
+              };
+              artists.push(artist);
+            }
+          });
+        const i = data.findIndex((x) => x.id === ind);
+        data[i].artists = artists;
+      });
+      return {
+        code: "success",
+        message: data,
       };
-      $(e)
-        .find(".col-album-circle")
-        .each((ind, el) => {
-          const artist = {
-            name: $(el).find(".card-info .artist a").text(),
-            alias: $(el)
-              .find(".card-info .artist a")
-              .attr("href")
-              .replace("/nghe-si/", ""),
-            thumb: $(el).find("img").attr("src"),
-          };
-          type.artists.push(artist);
-        });
-      data.push(type);
-      // console.log(type);
-    });
-    // console.log(data);
-    return {
-      code: "success",
-      message: data,
-    };
+    }
   },
 };
