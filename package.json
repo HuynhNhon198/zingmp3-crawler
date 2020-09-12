@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "nightmare": "^3.0.2",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "puppeteer": "^3.3.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"
